@@ -136,21 +136,7 @@ class PatientView(APIView):
                                 },   status=status.HTTP_201_CREATED)
         return Response({'msg':'Error'},status=status.HTTP_400_BAD_REQUEST)
         
-# class PatientUpdateView(APIView):
-#     def patch(self,request,pk):
-#         try:    
-#             id=pk
-#             print(id)
-#             patient = Patient.objects.get(id=id)
-#             print(patient)
-#             # return Response(status=status.HTTP_201_CREATED)
-#         except Patient.DoesNotExist:
-#             return Response({'message': 'Patient not found'}, status=status.HTTP_404_NOT_FOUND)
-#         serializer = PatientSerializer(patient, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,{'user_detail':serializer.data}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
     
 class PatientUpdateView(APIView):

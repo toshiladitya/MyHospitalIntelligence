@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
+# from address.models import AddressField
 import uuid
 class MyUserManager(BaseUserManager):
     def create_user(self, email, first_name,last_name,gender,username,mobile_number, password=None,confirm_password=None,):
@@ -89,10 +90,9 @@ class Patient(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
     
-    # @property
-    # def is_staff(self):
-    #     "Is the user a member of staff?"
-    #     # Simplest possible answer: All admins are staff
-    #     return self.is_admin
+
     
-    
+# class PatientProfile(models.Model):
+    # patient=models.OneToOneField("Patient", verbose_name=_("Patient profile"), on_delete=models.CASCADE)
+    # dob=models.DateField(_("Date Of Birth"), auto_now=False, auto_now_add=False)
+    # patinet_image=models.ImageField(_("Image"), upload_to='Images', height_field=None, width_field=None, max_length=None)
