@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-svyr8v0m6vj(04zqe5n6jv7pqx6nj+a4+vj+56h51&(ggeq2zi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
     
-ALLOWED_HOSTS = ['e3dd-2401-4900-1c1b-96e7-196c-1aa4-e1e5-af8e.ngrok-free.app']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'Patients',
+    'address',
     
 ]
 
