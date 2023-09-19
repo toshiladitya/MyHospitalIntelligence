@@ -92,7 +92,3 @@ class Patient(AbstractBaseUser):
     
 
     
-# class PatientProfile(models.Model):
-    # patient=models.OneToOneField("Patient", verbose_name=_("Patient profile"), on_delete=models.CASCADE)
-    # dob=models.DateField(_("Date Of Birth"), auto_now=False, auto_now_add=False)
-    # patinet_image=models.ImageField(_("Image"), upload_to='Images', height_field=None, width_field=None, max_length=None)
