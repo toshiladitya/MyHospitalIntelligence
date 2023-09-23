@@ -124,7 +124,7 @@ class PatientView(APIView):
         
             patient=Patient.objects.get(id=id)
             # print(patient.username)
-            return Response({'user-detail':{
+            return Response({'user_detail':{
                     'username':patient.username,
                     'email':patient.email,
                     'first_name':patient.first_name,
