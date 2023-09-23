@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from rest_framework.views import APIView
 from Patients.serializers import( PatientRegistrationSerializer,PatientLoginSerializer,PatientSerializer,
-                                 OtpForResetPassword,Verifyotpserializers,PasswordResetSerializers,PatientSerializer,ResendOtpserializer)
+                                 OtpForResetPassword,Verifyotpserializers,PasswordResetSerializers,PatientUpdateSerializer,ResendOtpserializer)
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from Patients.renderers import PatientRenderer
@@ -39,7 +39,6 @@ class PatientLoginView(APIView):
     renderer_classes=[PatientRenderer]
     def post(self,request,format=None):
         serializer=PatientLoginSerializer(data=request.data)
-        print("hihnihih")
         if serializer.is_valid(raise_exception=True):
             email=serializer.data.get('email')
             password=serializer.data.get('password')
@@ -121,20 +120,25 @@ class PatientView(APIView):
             id=user.id
             print(user)
             serializer=PatientSerializer(user)
-        
+           
             patient=Patient.objects.get(id=id)
+            dob_str = patient.dob.strftime('%Y-%m-%d') if patient.dob else None
             # print(patient.username)
-            return Response({'user_detail':{
+            return Response(    
+                {'user_detail':{
                     'username':patient.username,
                     'email':patient.email,
                     'first_name':patient.first_name,
                     'last_name':patient.last_name,
-                    'gender':patient.gender   
+                    'gender':patient.gender ,
+                    'mobile_number':patient.mobile_number,
+                    'image':patient.image_url,
+                    'dob':dob_str,
+                    'age':patient.age  
                 }
-                ,'msg':'Success'              
+                ,'msg':'Success'  }            
                                 
-                                
-                                },   status=status.HTTP_201_CREATED)
+                ,   status=status.HTTP_201_CREATED)
         return Response({'msg':'Error'},status=status.HTTP_400_BAD_REQUEST)
         
 
@@ -148,7 +152,7 @@ class PatientUpdateView(APIView):
         try:
             id=pk
             patient =Patient.objects.get(id=id)
-            serializer = PatientSerializer(patient, data=request.data)
+            serializer = PatientUpdateSerializer(patient, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({'msg':'Success','messages':'Successfully Updated'},status=status.HTTP_201_CREATED)

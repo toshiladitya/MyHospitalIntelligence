@@ -50,17 +50,38 @@ class PatientLoginSerializer(serializers.ModelSerializer):
 
 
 
+class PatientUpdateSerializer(serializers.ModelSerializer):
+    dob = serializers.DateField(format='%Y-%m-%d')
+    image_url=serializers.SerializerMethodField()
+    class Meta:
+        model=Patient
+        fields=['id','username','first_name','last_name','dob','age','gender','image','image_url']
+        
+    def get_dob(self, obj):
+        return obj.dob.strftime('%Y-%m-%d') if obj.dob else None
+    
+    def get_image_url(self, obj):
+        if obj.image:
+            return obj.image.url
+        return None
+        
+    @staticmethod
+    def get_age(obj):
+        # Calculate the age based on the dob field
+        # You can implement your age calculation logic here
+        return obj.age  # Assuming you have implemented the 'age' property in your model
+        
 
+                 
+    
                       
 # Patient get User
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model=Patient
-        fields=['id','username','first_name','last_name','gender']
+        fields=['id','username','first_name','last_name','dob','age','gender','image']
         
-
-        
-
+   
                  
 
 # verify otp for email verification
