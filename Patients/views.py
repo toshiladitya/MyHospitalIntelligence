@@ -126,6 +126,7 @@ class PatientView(APIView):
             # print(patient.username)
             return Response({'user-detail':{
                     'username':patient.username,
+                    'email':patient.email,
                     'first_name':patient.first_name,
                     'last_name':patient.last_name,
                     'gender':patient.gender   
