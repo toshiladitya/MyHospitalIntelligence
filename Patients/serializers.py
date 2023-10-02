@@ -51,11 +51,36 @@ class PatientLoginSerializer(serializers.ModelSerializer):
 
 
 class PatientUpdateSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        error_messages={
+            'blank': 'Username is required.'
+        }
+    )
+    first_name = serializers.CharField(
+        error_messages={
+            'blank': 'First Name is required.'
+        }
+    )
+    last_name = serializers.CharField(
+        error_messages={
+            'blank': 'Last Name is required.'
+        }
+    )
     dob = serializers.DateField(format='%Y-%m-%d')
     image_url=serializers.SerializerMethodField()
     class Meta:
         model=Patient
         fields=['id','username','first_name','last_name','dob','age','gender','image','image_url']
+    
+    def validate_username(self, value):
+        if not value:
+            raise serializers.ValidationError(self.fields['username'].error_messages['required'])
+        return value
+        
+    def validate_username(self, value):
+        if not value:
+            raise serializers.ValidationError("Username is required.")
+        return value
         
     def get_dob(self, obj):
         return obj.dob.strftime('%Y-%m-%d') if obj.dob else None
@@ -94,13 +119,13 @@ class OtpForResetPassword(serializers.Serializer):
     email=serializers.EmailField()
     def validate(self,attrs):
         email=attrs.get('email')
-
+        print(email)
         user=Patient.objects.filter(email=email)
-
         if not user:
             raise serializers.ValidationError({'messages':'The email you have entered is not a valid email!.','msg':'Error'}) 
         if user[0] and user[0].otp==None :
-            send_otp_via_mail(user[0])
+            print(email,'***************************************************')
+            send_otp_via_mail(email)
             print("the otp is none and email is verified")
             return attrs
         

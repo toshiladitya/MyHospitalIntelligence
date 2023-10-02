@@ -94,7 +94,7 @@ class OtpResetPasswordView(APIView):
        def post(self,request):
            serializer=OtpForResetPassword(data=request.data)
            if serializer.is_valid():
-                        
+               
                          return Response({'message':'Otp sent successfully','msg':'Success'},status=status.HTTP_201_CREATED)
            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
                
@@ -110,7 +110,7 @@ class PasswordResetView(APIView):
      
 class PatientView(APIView):
     authentication_classes=[JWTTokenUserAuthentication]
-    renderer_classes=[PatientRenderer]
+    # renderer_classes=[PatientRenderer]
     permission_classes=[IsAuthenticated]   
      
     def get(self,request,format=None):
@@ -119,8 +119,7 @@ class PatientView(APIView):
         if user:
             id=user.id
             print(user)
-            serializer=PatientSerializer(user)
-           
+            serializer=PatientUpdateSerializer(user)
             patient=Patient.objects.get(id=id)
             dob_str = patient.dob.strftime('%Y-%m-%d') if patient.dob else None
             # print(patient.username)
@@ -147,7 +146,7 @@ class PatientView(APIView):
 class PatientUpdateView(APIView):
     authentication_classes=[JWTTokenUserAuthentication]
     renderer_classes=[PatientRenderer]
-    permission_classes=[IsAuthenticated] 
+    permission_classes=[IsAuthenticated]
     def post(self,request,pk):
         try:
             id=pk
@@ -156,9 +155,9 @@ class PatientUpdateView(APIView):
             if serializer.is_valid():
                 serializer.save()
                 return Response({'msg':'Success','messages':'Successfully Updated'},status=status.HTTP_201_CREATED)
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Patient.DoesNotExist:
-            print("this is except block")
             return Response({'msg':'Error'},status=status.HTTP_400_BAD_REQUEST)
         
 class ResendOtpView(APIView):
